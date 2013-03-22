@@ -1,0 +1,104 @@
+<!-- dynamic-form-elements.phtml -->
+
+<script type="text/javascript">
+ 
+$(document).ready(function() {
+ 
+  $("#marca").change(
+      function() {
+          ajaxTecnologiaField();
+       }
+    );
+  }
+);
+ 
+// Get value of id - integer appended to dynamic form field names and ids
+var id = $("#id").val();
+ 
+// Retrieve new element's html from controller
+function ajaxTecnologiaField() {
+  $.ajax(
+    {
+      type: "GET",
+      url: "<?php echo $this->url(array('action' => 'tecnologia', 'format' => 'html'));?>",
+      data: "CodMarca=" + $("#marca").val(),
+      success: function(newElement) {
+        removeModeloField();
+        removeTecnologiaField();
+        removeColorField();  
+        // Insert new element before the Add button
+        $("#tecnologiahidden").parent().before(newElement);
+      }
+    }
+  );
+}
+ 
+function removeTecnologiaField() {
+ 
+  // Build the attribute search string.  This will match the last added  dt and dd elements.  
+  // Specifically, it matches any element where the id begins with 'newName<int>-'.
+  //searchString = '*[id^=tecnologia-]';
+ 
+  // Remove the elements that match the search string.
+  //$(searchString).remove()
+    $("#tecnologia-label").parent().remove();
+}
+
+
+// Retrieve new element's html from controller
+function ajaxModeloField() {
+  $.ajax(
+    {
+      type: "GET",
+      url: "<?php echo $this->url(array('action' => 'modelo', 'format' => 'html'));?>",
+      data: "CodMarca=" + $("#marca").val()+"&CodTecnologia=" + $("#tecnologia").val(),
+      success: function(newElement) {
+        removeModeloField();
+        removeColorField();  
+        // Insert new element before the Add button
+        $("#tecnologiahidden").parent().before(newElement);
+      }
+    }
+  );
+}
+ 
+function removeModeloField() {
+ 
+  // Build the attribute search string.  This will match the last added  dt and dd elements.  
+  // Specifically, it matches any element where the id begins with 'newName<int>-'.
+  //searchString = '*[id^=tecnologia-]';
+ 
+  // Remove the elements that match the search string.
+  //$(searchString).remove()
+    $("#modelo-label").parent().remove();
+}
+
+// Retrieve new element's html from controller
+function ajaxColorField() {
+  $.ajax(
+    {
+      type: "GET",
+      url: "<?php echo $this->url(array('action' => 'color', 'format' => 'html'));?>",
+      data: "CodModelo=" + $("#modelo").val(),
+      success: function(newElement) {
+        removeColorField();  
+        // Insert new element before the Add button
+        $("#tecnologiahidden").parent().before(newElement);
+      }
+    }
+  );
+}
+ 
+function removeColorField() {
+ 
+  // Build the attribute search string.  This will match the last added  dt and dd elements.  
+  // Specifically, it matches any element where the id begins with 'newName<int>-'.
+  //searchString = '*[id^=tecnologia-]';
+ 
+  // Remove the elements that match the search string.
+  //$(searchString).remove()
+    $("#color-label").parent().remove();
+}
+
+ 
+</script>
